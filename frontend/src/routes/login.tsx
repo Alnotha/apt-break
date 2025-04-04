@@ -79,7 +79,13 @@ function Login() {
   }
 
   const handleGoogleLogin = () => {
-    window.location.href = `${import.meta.env.VITE_API_URL}/api/v1/auth/login/google`
+    // Get the base API URL without trailing slash
+    const baseUrl = import.meta.env.VITE_API_URL.replace(/\/$/, '');
+    
+    // Check if the API URL already contains /api/v1
+    const apiPath = baseUrl.includes('/api/v1') ? '/auth/login/google' : '/api/v1/auth/login/google';
+    
+    window.location.href = `${baseUrl}${apiPath}`;
   }
 
   return (
