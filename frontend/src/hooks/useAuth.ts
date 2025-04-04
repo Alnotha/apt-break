@@ -42,10 +42,21 @@ const useAuth = () => {
   })
 
   const login = async (data: AccessToken) => {
-    const response = await LoginService.loginAccessToken({
-      formData: data,
-    })
-    localStorage.setItem("access_token", response.access_token)
+    try {
+      const response = await LoginService.loginAccessToken({
+        formData: {
+          username: data.username,
+          password: data.password,
+          grant_type: "password",
+        },
+      })
+      localStorage.setItem("access_token", response.access_token)
+    } catch (error) {
+      if (error instanceof ApiError) {
+        throw error
+      }
+      throw new Error("Login failed")
+    }
   }
 
   const loginMutation = useMutation({

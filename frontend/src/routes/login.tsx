@@ -39,6 +39,7 @@ function Login() {
     defaultValues: {
       username: "",
       password: "",
+      grant_type: "password",
     },
   })
 
@@ -48,7 +49,13 @@ function Login() {
     resetError()
 
     try {
-      await loginMutation.mutateAsync(data)
+      // Convert email to username format if needed
+      const loginData = {
+        ...data,
+        username: data.username.toLowerCase().trim(),
+        grant_type: "password",
+      }
+      await loginMutation.mutateAsync(loginData)
     } catch {
       // error is handled by useAuth hook
     }
@@ -82,11 +89,12 @@ function Login() {
             <Input
               id="username"
               {...register("username", {
-                required: "Username is required",
+                required: "Email is required",
                 pattern: emailPattern,
               })}
               placeholder="Email"
               type="email"
+              autoComplete="email"
             />
           </InputGroup>
         </Field>
@@ -96,6 +104,7 @@ function Login() {
           {...register("password", passwordRules())}
           placeholder="Password"
           errors={errors}
+          autoComplete="current-password"
         />
         <RouterLink to="/recover-password" className="main-link">
           Forgot Password?
