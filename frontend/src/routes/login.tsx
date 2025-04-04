@@ -3,7 +3,6 @@ import {
   Link as RouterLink,
   createFileRoute,
   redirect,
-  useSearch,
 } from "@tanstack/react-router"
 import { type SubmitHandler, useForm } from "react-hook-form"
 import { FiLock, FiMail } from "react-icons/fi"
