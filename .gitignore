@@ -5,3 +5,12 @@ node_modules/
 /blob-report/
 /playwright/.cache/
 setup.txt
+
+# Environment files
+.env
+.env.*
+!.env.example
+.env.local
+.env.development
+.env.test
+.env.production
