@@ -77,7 +77,21 @@ async def google_callback(
 
         # Generate JWT token
         access_token = security.create_access_token(user.id)
-        response = RedirectResponse(url=f"{settings.FRONTEND_URL}/login?token={access_token}")
+        
+        # Use the configured frontend URL or fallback to production URL if needed
+        frontend_url = settings.FRONTEND_URL
+        if not frontend_url or "localhost" in frontend_url:
+            # Fallback to production URL if in production
+            if settings.ENVIRONMENT != "local":
+                frontend_url = "https://apt-break-frontend-git-main-alnothas.vercel.app"
+        
+        # Add the token as a query parameter
+        redirect_url = f"{frontend_url}/login?token={access_token}"
+        
+        # Log the redirect for debugging (will appear in server logs)
+        print(f"Redirecting to: {redirect_url}")
+        
+        response = RedirectResponse(url=redirect_url)
         return response
 
     except Exception as e:
