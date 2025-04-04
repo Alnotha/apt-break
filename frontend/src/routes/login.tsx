@@ -1,11 +1,15 @@
-import { Container, Image, Input, Text } from "@chakra-ui/react"
+import { Container, Image, Input, Text, Box, HStack, Flex } from "@chakra-ui/react"
 import {
   Link as RouterLink,
   createFileRoute,
   redirect,
+  useSearch,
 } from "@tanstack/react-router"
 import { type SubmitHandler, useForm } from "react-hook-form"
 import { FiLock, FiMail } from "react-icons/fi"
+import { FcGoogle } from "react-icons/fc"
+import { useEffect } from "react"
+import { z } from "zod"
 
 import type { Body_login_login_access_token as AccessToken } from "@/client"
 import { Button } from "@/components/ui/button"
@@ -16,8 +20,13 @@ import useAuth, { isLoggedIn } from "@/hooks/useAuth"
 import Logo from "/assets/images/fastapi-logo.svg"
 import { emailPattern, passwordRules } from "../utils"
 
+const loginSearchSchema = z.object({
+  token: z.string().optional(),
+})
+
 export const Route = createFileRoute("/login")({
   component: Login,
+  validateSearch: (search) => loginSearchSchema.parse(search),
   beforeLoad: async () => {
     if (isLoggedIn()) {
       throw redirect({
@@ -29,6 +38,7 @@ export const Route = createFileRoute("/login")({
 
 function Login() {
   const { loginMutation, error, resetError } = useAuth()
+  const { token } = Route.useSearch()
   const {
     register,
     handleSubmit,
@@ -43,13 +53,21 @@ function Login() {
     },
   })
 
+  useEffect(() => {
+    if (token) {
+      // Store the token from Google OAuth
+      localStorage.setItem("token", token)
+      // Redirect to home page
+      window.location.href = "/"
+    }
+  }, [token])
+
   const onSubmit: SubmitHandler<AccessToken> = async (data) => {
     if (isSubmitting) return
 
     resetError()
 
     try {
-      // Convert email to username format if needed
       const loginData = {
         ...data,
         username: data.username.toLowerCase().trim(),
@@ -59,6 +77,10 @@ function Login() {
     } catch {
       // error is handled by useAuth hook
     }
+  }
+
+  const handleGoogleLogin = () => {
+    window.location.href = `${import.meta.env.VITE_API_URL}/auth/login/google`
   }
 
   return (
@@ -111,6 +133,24 @@ function Login() {
         </RouterLink>
         <Button variant="solid" type="submit" loading={isSubmitting} size="md">
           Log In
+        </Button>
+        
+        <Flex w="100%" align="center" gap={2} my={2}>
+          <Box flex="1" h="1px" bg="gray.200" />
+          <Text color="gray.500" fontSize="sm">OR</Text>
+          <Box flex="1" h="1px" bg="gray.200" />
+        </Flex>
+        
+        <Button
+          variant="outline"
+          size="md"
+          onClick={handleGoogleLogin}
+          w="100%"
+        >
+          <HStack gap={2}>
+            <FcGoogle size={20} />
+            <Text>Continue with Google</Text>
+          </HStack>
         </Button>
         <Text>
           Don't have an account?{" "}
