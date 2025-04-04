@@ -2,7 +2,6 @@ import sentry_sdk
 from fastapi import FastAPI
 from fastapi.routing import APIRoute
 from starlette.middleware.cors import CORSMiddleware
-
 from app.api.main import api_router
 from app.core.config import settings
 
@@ -20,14 +19,20 @@ app = FastAPI(
     generate_unique_id_function=custom_generate_unique_id,
 )
 
+# ✅ Fallback if .env doesn't parse BACKEND_CORS_ORIGINS properly
+default_cors_origins = [
+    "http://localhost:5173",  # dev
+    "https://apt-break-frontend.vercel.app",  # vercel deployed frontend
+    "https://www.aptbreak.com"  # custom domain
+]
+
 # Set all CORS enabled origins
-if settings.all_cors_origins:
-    app.add_middleware(
-        CORSMiddleware,
-        allow_origins=settings.all_cors_origins,
-        allow_credentials=True,
-        allow_methods=["*"],
-        allow_headers=["*"],
-    )
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=settings.all_cors_origins or default_cors_origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 app.include_router(api_router, prefix=settings.API_V1_STR)
