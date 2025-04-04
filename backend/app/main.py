@@ -2,6 +2,7 @@ import sentry_sdk
 from fastapi import FastAPI
 from fastapi.routing import APIRoute
 from starlette.middleware.cors import CORSMiddleware
+import aiohttp
 from app.api.main import api_router
 from app.core.config import settings
 
@@ -34,5 +35,13 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+@app.on_event("startup")
+async def startup_db_client():
+    app.state.http_client = aiohttp.ClientSession()
+
+@app.on_event("shutdown")
+async def shutdown_db_client():
+    await app.state.http_client.close()
 
 app.include_router(api_router, prefix=settings.API_V1_STR)
