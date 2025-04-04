@@ -9,7 +9,6 @@ from app.api import deps
 from app.core import security
 from app.core.config import settings
 from app.models import User
-from app.utils import generate_password_reset_token, send_reset_password_email
 
 router = APIRouter()
 
