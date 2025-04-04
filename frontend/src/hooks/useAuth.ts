@@ -4,12 +4,12 @@ import { useState } from "react"
 
 import {
   type Body_login_login_access_token as AccessToken,
-  type ApiError,
   LoginService,
   type UserPublic,
   type UserRegister,
   UsersService,
 } from "@/client"
+import { ApiError } from "@/client/core/ApiError"
 import { handleError } from "@/utils"
 
 const isLoggedIn = () => {
