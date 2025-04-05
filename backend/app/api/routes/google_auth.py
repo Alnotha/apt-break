@@ -51,6 +51,12 @@ async def google_callback(
         }
         async with request.app.state.http_client.post(token_url, data=token_data) as response:
             token_response = await response.json()
+            if 'error' in token_response:
+                print(f"Google OAuth Error: {token_response}")
+                raise HTTPException(
+                    status_code=400,
+                    detail=f"Google OAuth Error: {token_response.get('error_description', token_response['error'])}"
+                )
             access_token = token_response["access_token"]
 
         # Get user info from Google
@@ -95,7 +101,8 @@ async def google_callback(
         return response
 
     except Exception as e:
+        print(f"Google OAuth Error: {str(e)}")
         raise HTTPException(
             status_code=400,
-            detail="Could not validate Google credentials",
+            detail=f"Could not validate Google credentials: {str(e)}"
         ) from e 
