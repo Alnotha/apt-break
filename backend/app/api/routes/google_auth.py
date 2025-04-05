@@ -21,7 +21,7 @@ async def login_google(request: Request) -> Any:
     google_oauth_url = (
         "https://accounts.google.com/o/oauth2/v2/auth?"
         f"client_id={settings.GOOGLE_CLIENT_ID}&"
-        f"redirect_uri={settings.GOOGLE_REDIRECT_URI}&"
+        f"redirect_uri={settings.get_google_redirect_uri}&"
         "response_type=code&"
         "scope=email profile&"
         "access_type=offline&"
@@ -46,7 +46,7 @@ async def google_callback(
             "code": code,
             "client_id": settings.GOOGLE_CLIENT_ID,
             "client_secret": settings.GOOGLE_CLIENT_SECRET,
-            "redirect_uri": settings.GOOGLE_REDIRECT_URI,
+            "redirect_uri": settings.get_google_redirect_uri,
             "grant_type": "authorization_code",
         }
         async with request.app.state.http_client.post(token_url, data=token_data) as response:
