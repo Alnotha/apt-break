@@ -1,4 +1,5 @@
 from typing import Any
+from datetime import datetime, timedelta
 
 from fastapi import APIRouter, Depends, HTTPException, Request
 from fastapi.responses import RedirectResponse
@@ -109,7 +110,10 @@ async def google_callback(
                 db.refresh(user)
 
         # Generate JWT token
-        access_token = security.create_access_token(user.id)
+        access_token = security.create_access_token(
+            subject=user.id,
+            expires_delta=timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
+        )
         
         # Use the configured frontend URL or fallback to production URL if needed
         frontend_url = settings.FRONTEND_URL
