@@ -10,6 +10,7 @@ class UserBase(SQLModel):
     is_active: bool = True
     is_superuser: bool = False
     full_name: str | None = Field(default=None, max_length=255)
+    google_id: str | None = Field(default=None, unique=True, index=True)
 
 
 # Properties to receive via API on creation

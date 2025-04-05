@@ -64,9 +64,24 @@ async def google_callback(
         headers = {"Authorization": f"Bearer {access_token}"}
         async with request.app.state.http_client.get(userinfo_url, headers=headers) as response:
             userinfo = await response.json()
+            print(f"Google user info response: {userinfo}")  # Debug log
+            
+            if 'error' in userinfo:
+                print(f"Error in user info: {userinfo}")
+                raise HTTPException(
+                    status_code=400,
+                    detail=f"Failed to get user info: {userinfo.get('error_description', userinfo['error'])}"
+                )
+            
+            if 'id' not in userinfo:
+                print(f"Missing ID in user info: {userinfo}")
+                raise HTTPException(
+                    status_code=400,
+                    detail="Invalid user info received from Google"
+                )
 
         # Check if user exists
-        statement = select(User).where(User.google_id == userinfo["id"])
+        statement = select(User).where(User.google_id == str(userinfo["id"]))  # Convert ID to string
         user = db.exec(statement).first()
 
         if not user:
@@ -102,6 +117,7 @@ async def google_callback(
 
     except Exception as e:
         print(f"Google OAuth Error: {str(e)}")
+        print(f"Full error details: {repr(e)}")  # More detailed error info
         raise HTTPException(
             status_code=400,
             detail=f"Could not validate Google credentials: {str(e)}"
