@@ -41,7 +41,22 @@ class Settings(BaseSettings):
     # Google OAuth settings
     GOOGLE_CLIENT_ID: str = ""
     GOOGLE_CLIENT_SECRET: str = ""
-    GOOGLE_REDIRECT_URI: str = "http://localhost:8000/api/v1/auth/login/google/callback"
+    GOOGLE_REDIRECT_URI: str = ""
+
+    @computed_field  # type: ignore[prop-decorator]
+    @property
+    def get_google_redirect_uri(self) -> str:
+        """
+        Returns the appropriate redirect URI based on environment.
+        """
+        if self.GOOGLE_REDIRECT_URI:
+            return self.GOOGLE_REDIRECT_URI
+        
+        # Default redirect URIs based on environment
+        if self.ENVIRONMENT == "local":
+            return "http://localhost:8000/api/v1/auth/login/google/callback"
+        else:
+            return "https://apt-break-backend.onrender.com/api/v1/auth/login/google/callback"
 
     @computed_field  # type: ignore[prop-decorator]
     @property

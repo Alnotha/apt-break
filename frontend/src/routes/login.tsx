@@ -82,10 +82,19 @@ function Login() {
     // Get the base API URL without trailing slash
     const baseUrl = import.meta.env.VITE_API_URL.replace(/\/$/, '');
     
-    // Check if the API URL already contains /api/v1
-    const apiPath = baseUrl.includes('/api/v1') ? '/auth/login/google' : '/api/v1/auth/login/google';
+    // Check if we're in production
+    const isProduction = !baseUrl.includes('localhost');
     
-    window.location.href = `${baseUrl}${apiPath}`;
+    // Use the appropriate base URL
+    const apiBaseUrl = isProduction 
+      ? 'https://apt-break-backend.onrender.com'
+      : baseUrl;
+    
+    // Construct the full URL
+    const loginUrl = `${apiBaseUrl}/api/v1/auth/login/google`;
+    
+    // Redirect to Google login
+    window.location.href = loginUrl;
   }
 
   return (

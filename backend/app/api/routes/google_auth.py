@@ -37,7 +37,7 @@ async def google_callback(
     db: Session = Depends(deps.get_db),
 ) -> Any:
     """
-    Handle Google OAuth callback.
+    Handle Google OAuth callback...
     """
     try:
         # Exchange code for tokens
