@@ -120,7 +120,7 @@ async def google_callback(
         if not frontend_url or "localhost" in frontend_url:
             # Fallback to production URL if in production
             if settings.ENVIRONMENT != "local":
-                frontend_url = "https://apt-break-frontend-git-main-alnothas.vercel.app"
+                frontend_url = "https://apt-break-frontend-git-googleoauth-alyan-tharanis-projects.vercel.app"
         
         # Add the token as a query parameter
         redirect_url = f"{frontend_url}/?token={access_token}"
