@@ -123,7 +123,7 @@ async def google_callback(
                 frontend_url = "https://apt-break-frontend-git-main-alnothas.vercel.app"
         
         # Add the token as a query parameter
-        redirect_url = f"{frontend_url}/login?token={access_token}"
+        redirect_url = f"{frontend_url}/?token={access_token}"
         
         # Log the redirect for debugging (will appear in server logs)
         print(f"Redirecting to: {redirect_url}")
