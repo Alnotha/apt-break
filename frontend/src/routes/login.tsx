@@ -87,7 +87,7 @@ function Login() {
     
     // Use the appropriate base URL
     const apiBaseUrl = isProduction 
-      ? 'https://apt-break-backend.onrender.com'
+      ? 'https://apt-break.onrender.com'
       : baseUrl;
     
     // Construct the full URL

@@ -56,7 +56,7 @@ class Settings(BaseSettings):
         if self.ENVIRONMENT == "local":
             return "http://localhost:8000/api/v1/auth/login/google/callback"
         else:
-            return "https://apt-break-backend.onrender.com/api/v1/auth/login/google/callback"
+            return "https://apt-break.onrender.com/api/v1/auth/login/google/callback"
 
     @computed_field  # type: ignore[prop-decorator]
     @property
