@@ -80,21 +80,33 @@ async def google_callback(
                     detail="Invalid user info received from Google"
                 )
 
-        # Check if user exists
-        statement = select(User).where(User.google_id == str(userinfo["id"]))  # Convert ID to string
+        # First try to find user by Google ID
+        statement = select(User).where(User.google_id == str(userinfo["id"]))
         user = db.exec(statement).first()
 
         if not user:
-            # Create new user
-            user = User(
-                email=userinfo["email"],
-                full_name=userinfo.get("name"),
-                google_id=userinfo["id"],
-                hashed_password=None,  # No password for Google users
-            )
-            db.add(user)
-            db.commit()
-            db.refresh(user)
+            # If not found by Google ID, try to find by email
+            statement = select(User).where(User.email == userinfo["email"])
+            user = db.exec(statement).first()
+            
+            if user:
+                # User exists with email but no Google ID - update their account
+                user.google_id = userinfo["id"]
+                user.full_name = user.full_name or userinfo.get("name")  # Keep existing name if set
+                db.add(user)
+                db.commit()
+                db.refresh(user)
+            else:
+                # Completely new user
+                user = User(
+                    email=userinfo["email"],
+                    full_name=userinfo.get("name"),
+                    google_id=userinfo["id"],
+                    hashed_password=None,  # No password for Google users
+                )
+                db.add(user)
+                db.commit()
+                db.refresh(user)
 
         # Generate JWT token
         access_token = security.create_access_token(user.id)
