@@ -1,7 +1,7 @@
 """add google_id column
 
-Revision ID: add_google_id_column
-Revises: 
+Revision ID: add_google_id_column_v2
+Revises: 1a31ce608336
 Create Date: 2024-04-05
 
 """
@@ -13,8 +13,8 @@ import sqlmodel
 
 
 # revision identifiers, used by Alembic.
-revision: str = 'add_google_id_column'
-down_revision: Union[str, None] = None
+revision: str = 'add_google_id_column_v2'
+down_revision: Union[str, None] = '1a31ce608336'
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
 
