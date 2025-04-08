@@ -25,15 +25,14 @@ export default defineConfig({
     },
   },
   server: {
-    port: 3000,
-    strictPort: true,
+    port: process.env.PORT ? parseInt(process.env.PORT) : 3001,
     host: true,
-    proxy: {
+    proxy: process.env.NODE_ENV === 'development' ? {
       '/api': {
         target: process.env.VITE_API_URL || 'http://localhost:8000',
         changeOrigin: true,
         secure: false,
       }
-    }
+    } : undefined
   },
 })
