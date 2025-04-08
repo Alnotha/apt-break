@@ -87,8 +87,8 @@ function Login() {
     
     // Use the appropriate base URL
     const apiBaseUrl = isProduction 
-      ? 'https://apt-break.onrender.com'
-      : baseUrl;
+      ? 'https://api.aptbreak.com'
+      : 'http://localhost:8000';
     
     // Construct the full URL
     const loginUrl = `${apiBaseUrl}/api/v1/auth/login/google`;
