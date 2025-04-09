@@ -27,7 +27,15 @@ const loginSearchSchema = z.object({
 export const Route = createFileRoute("/login")({
   component: Login,
   validateSearch: (search) => loginSearchSchema.parse(search),
-  beforeLoad: async () => {
+  beforeLoad: async ({ search }) => {
+    // If there's a token, store it and redirect
+    if (search.token) {
+      localStorage.setItem("access_token", search.token)
+      throw redirect({
+        to: "/",
+      })
+    }
+    // Otherwise, check if already logged in
     if (isLoggedIn()) {
       throw redirect({
         to: "/",
@@ -38,7 +46,6 @@ export const Route = createFileRoute("/login")({
 
 function Login() {
   const { loginMutation, error, resetError } = useAuth()
-  const { token } = Route.useSearch()
   const navigate = useNavigate()
   const {
     register,
@@ -53,15 +60,6 @@ function Login() {
       grant_type: "password",
     },
   })
-
-  useEffect(() => {
-    if (token) {
-      // Store the token from Google OAuth with the correct key
-      localStorage.setItem("access_token", token)
-      // Use the same successful login flow as email/password
-      navigate({ to: "/" })
-    }
-  }, [token, navigate])
 
   const onSubmit: SubmitHandler<AccessToken> = async (data) => {
     if (isSubmitting) return
