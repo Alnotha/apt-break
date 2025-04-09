@@ -92,7 +92,7 @@ class Settings(BaseSettings):
             host=self.POSTGRES_SERVER,
             port=self.POSTGRES_PORT,
             path=self.POSTGRES_DB,
-            query={"sslmode": "require"}  # Add explicit SSL mode for Neon
+            query="sslmode=require"  # Pass as string instead of dict
         )
 
     SMTP_TLS: bool = True
