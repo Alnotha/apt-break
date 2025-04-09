@@ -3,12 +3,10 @@ import {
   Link as RouterLink,
   createFileRoute,
   redirect,
-  useNavigate,
 } from "@tanstack/react-router"
 import { type SubmitHandler, useForm } from "react-hook-form"
 import { FiLock, FiMail } from "react-icons/fi"
 import { FcGoogle } from "react-icons/fc"
-import { useEffect } from "react"
 import { z } from "zod"
 
 import type { Body_login_login_access_token as AccessToken } from "@/client"
@@ -46,7 +44,6 @@ export const Route = createFileRoute("/login")({
 
 function Login() {
   const { loginMutation, error, resetError } = useAuth()
-  const navigate = useNavigate()
   const {
     register,
     handleSubmit,
