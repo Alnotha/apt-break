@@ -58,12 +58,10 @@ function Login() {
     if (token) {
       // Store the token from Google OAuth with the correct key
       localStorage.setItem("access_token", token)
-      // Wait for user data to be loaded before navigating
-      if (user) {
-        navigate({ to: "/" })
-      }
+      // Use the same successful login flow as email/password
+      navigate({ to: "/" })
     }
-  }, [token, navigate, user])
+  }, [token, navigate])
 
   const onSubmit: SubmitHandler<AccessToken> = async (data) => {
     if (isSubmitting) return
