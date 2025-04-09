@@ -54,9 +54,9 @@ function Login() {
 
   useEffect(() => {
     if (token) {
-      // Store the token from Google OAuth
-      localStorage.setItem("token", token)
-      // Redirect to home page
+      // Store the token from Google OAuth with the correct key
+      localStorage.setItem("access_token", token)
+      // Force a page reload to update authentication state
       window.location.href = "/"
     }
   }, [token])

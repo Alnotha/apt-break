@@ -136,6 +136,15 @@ async def google_callback(
     except Exception as e:
         print(f"Google OAuth Error: {str(e)}")
         print(f"Full error details: {repr(e)}")  # More detailed error info
+        
+        # Check if it's a database connection error
+        if "SSL SYSCALL error" in str(e) or "OperationalError" in str(e):
+            print("Database connection error detected - please check your database SSL settings")
+            raise HTTPException(
+                status_code=500,
+                detail="Database connection error. Please try again later or contact support."
+            ) from e
+            
         raise HTTPException(
             status_code=400,
             detail=f"Could not validate Google credentials: {str(e)}"
