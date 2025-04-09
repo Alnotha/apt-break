@@ -37,7 +37,7 @@ export const Route = createFileRoute("/login")({
 })
 
 function Login() {
-  const { loginMutation, error, resetError, user } = useAuth()
+  const { loginMutation, error, resetError } = useAuth()
   const { token } = Route.useSearch()
   const navigate = useNavigate()
   const {
