@@ -3,6 +3,7 @@ import {
   Link as RouterLink,
   createFileRoute,
   redirect,
+  useNavigate,
 } from "@tanstack/react-router"
 import { type SubmitHandler, useForm } from "react-hook-form"
 import { FiLock, FiMail } from "react-icons/fi"
@@ -38,6 +39,7 @@ export const Route = createFileRoute("/login")({
 function Login() {
   const { loginMutation, error, resetError } = useAuth()
   const { token } = Route.useSearch()
+  const navigate = useNavigate()
   const {
     register,
     handleSubmit,
@@ -56,10 +58,10 @@ function Login() {
     if (token) {
       // Store the token from Google OAuth with the correct key
       localStorage.setItem("access_token", token)
-      // Force a page reload to update authentication state
-      window.location.href = "/"
+      // Navigate to the home page using the router
+      navigate({ to: "/" })
     }
-  }, [token])
+  }, [token, navigate])
 
   const onSubmit: SubmitHandler<AccessToken> = async (data) => {
     if (isSubmitting) return
