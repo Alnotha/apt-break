@@ -37,7 +37,7 @@ export const Route = createFileRoute("/login")({
 })
 
 function Login() {
-  const { loginMutation, error, resetError } = useAuth()
+  const { loginMutation, error, resetError, user } = useAuth()
   const { token } = Route.useSearch()
   const navigate = useNavigate()
   const {
@@ -58,10 +58,12 @@ function Login() {
     if (token) {
       // Store the token from Google OAuth with the correct key
       localStorage.setItem("access_token", token)
-      // Navigate to the home page using the router
-      navigate({ to: "/" })
+      // Wait for user data to be loaded before navigating
+      if (user) {
+        navigate({ to: "/" })
+      }
     }
-  }, [token, navigate])
+  }, [token, navigate, user])
 
   const onSubmit: SubmitHandler<AccessToken> = async (data) => {
     if (isSubmitting) return
