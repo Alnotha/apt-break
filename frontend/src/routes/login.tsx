@@ -1,4 +1,5 @@
-import { Container, Image, Input, Text, Box, HStack, Flex } from "@chakra-ui/react"
+// import { Container, Image, Input, Text, Box, HStack, Flex } from "@chakra-ui/react"
+import { Container, Image, Input, Text, Box} from "@chakra-ui/react"
 import {
   Link as RouterLink,
   createFileRoute,
@@ -6,7 +7,7 @@ import {
 } from "@tanstack/react-router"
 import { type SubmitHandler, useForm } from "react-hook-form"
 import { FiLock, FiMail } from "react-icons/fi"
-import { FcGoogle } from "react-icons/fc"
+// import { FcGoogle } from "react-icons/fc"
 import { z } from "zod"
 
 import type { Body_login_login_access_token as AccessToken } from "@/client"
@@ -96,6 +97,7 @@ function Login() {
 
   return (
     <>
+    <Box bg="#38572d" h="100vh" w="100vw">
       <Container
         as="form"
         onSubmit={handleSubmit(onSubmit)}
@@ -105,6 +107,7 @@ function Login() {
         justifyContent="center"
         gap={4}
         centerContent
+        bg="#38572d"
       >
         <Image
           src={Logo}
@@ -128,6 +131,11 @@ function Login() {
               placeholder="Email"
               type="email"
               autoComplete="email"
+              color="#eebd40" // Text color
+              bg="transparent" // Ensure the background stays transparent
+              _placeholder={{ color: "#eebd40" }} // Placeholder color
+              border="1px solid #eebd40" // Border color
+
             />
           </InputGroup>
         </Field>
@@ -138,18 +146,31 @@ function Login() {
           placeholder="Password"
           errors={errors}
           autoComplete="current-password"
+          color="#eebd40"
+          _placeholder={{ color: "#eebd40" }} 
+          border = "1px solid #eebd40"
         />
         <RouterLink to="/recover-password" className="main-link">
           Forgot Password?
         </RouterLink>
-        <Button variant="solid" type="submit" loading={isSubmitting} size="md">
-          Log In
-        </Button>
+
+        <Button
+        variant="solid"
+        type="submit"
+        loading={isSubmitting}
+        size="md"
+        bg="#eebd40"
+        color="white"
+        _hover={{ bg: "#d4a732" }}
+      >
+      
+        Log In
+      </Button>
         
-        <Flex w="100%" align="center" gap={2} my={2}>
-          <Box flex="1" h="1px" bg="gray.200" />
-          <Text color="gray.500" fontSize="sm">OR</Text>
-          <Box flex="1" h="1px" bg="gray.200" />
+        {/* <Flex w="100%" align="center" gap={2} my={2}>
+          <Box flex="1" h="1px" bg="gold.200" />
+          <Text color="gold.500" fontSize="sm">OR</Text>
+          <Box flex="1" h="1px" bg="gold.200" />
         </Flex>
         
         <Button
@@ -162,14 +183,16 @@ function Login() {
             <FcGoogle size={20} />
             <Text>Continue with Google</Text>
           </HStack>
-        </Button>
-        <Text>
+        </Button> */}
+
+        <Text color="#eebd40">
           Don't have an account?{" "}
           <RouterLink to="/signup" className="main-link">
             Sign Up
           </RouterLink>
         </Text>
       </Container>
+    </Box>
     </>
   )
 }

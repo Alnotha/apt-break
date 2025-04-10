@@ -78,10 +78,10 @@ export const LightMode = React.forwardRef<HTMLSpanElement, SpanProps>(
   function LightMode(props, ref) {
     return (
       <Span
-        color="fg"
+        color="#38572d"
         display="contents"
         className="chakra-theme light"
-        colorPalette="gray"
+        colorPalette="green"
         colorScheme="light"
         ref={ref}
         {...props}
