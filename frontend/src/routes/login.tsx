@@ -76,24 +76,24 @@ function Login() {
     }
   }
 
-  const handleGoogleLogin = () => {
-    // Get the base API URL without trailing slash
-    const baseUrl = import.meta.env.VITE_API_URL.replace(/\/$/, '');
+  // const handleGoogleLogin = () => {
+  //   // Get the base API URL without trailing slash
+  //   const baseUrl = import.meta.env.VITE_API_URL.replace(/\/$/, '');
     
-    // Check if we're in production
-    const isProduction = !baseUrl.includes('localhost');
+  //   // Check if we're in production
+  //   const isProduction = !baseUrl.includes('localhost');
     
-    // Use the appropriate base URL
-    const apiBaseUrl = isProduction 
-      ? 'https://api.aptbreak.com'
-      : 'http://localhost:8000';
+  //   // Use the appropriate base URL
+  //   const apiBaseUrl = isProduction 
+  //     ? 'https://api.aptbreak.com'
+  //     : 'http://localhost:8000';
     
-    // Construct the full URL
-    const loginUrl = `${apiBaseUrl}/api/v1/auth/login/google`;
+  //   // Construct the full URL
+  //   const loginUrl = `${apiBaseUrl}/api/v1/auth/login/google`;
     
-    // Redirect to Google login
-    window.location.href = loginUrl;
-  }
+  //   // Redirect to Google login
+  //   window.location.href = loginUrl;
+  // }
 
   return (
     <>
